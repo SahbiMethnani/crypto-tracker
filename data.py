@@ -16,18 +16,14 @@ def get_exchange():
 """
 @st.cache_resource
 def get_exchange():
-    exchange = ccxt.binance({
-        "enableRateLimit": True,
-        "timeout": 30000,
-        "httpProxy": None,
-        "httpsProxy": None,
-        "socksProxy": None,
-    })
-
-    exchange.session.trust_env = False
-    exchange.proxies = {}
-
-    return exchange
+    for name in ["binance", "okx", "kucoin", "kraken", "coinbase"]:
+        try:
+            ex = getattr(ccxt, name)({"enableRateLimit": True, "timeout": 30000})
+            ex.fetch_ticker("BTC/USDT" if name != "kraken" else "BTC/USD")
+            return ex
+        except Exception as e:
+            print(f"{name} indisponible : {e}")
+    raise RuntimeError("Aucun exchange accessible")
 
 
 @st.cache_data(ttl=CACHE_TTL_MARKET)
