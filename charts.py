@@ -1,8 +1,3 @@
-# ─── charts.py ───────────────────────────────────────────────────────────────
-# Construction de tous les graphiques Plotly
-# Modifie ce fichier pour changer l'apparence des graphiques
-# ─────────────────────────────────────────────────────────────────────────────
-
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
@@ -11,7 +6,6 @@ from plotly.subplots import make_subplots
 from config import COLORS, AXIS_STYLE, CHART_LAYOUT, CHART_LAYOUT_SIMPLE
 
 
-# ─── GRAPHIQUE PRINCIPAL : Chandeliers + Volume + RSI ────────────────────────
 def candlestick_chart(
     df: pd.DataFrame,
     symbol: str,
@@ -49,7 +43,6 @@ def candlestick_chart(
     name=symbol,
     showlegend=False,
 ), row=1, col=1)
-    # ── Bollinger Bands ───────────────────────────────────────────────────────
     if show_bb:
         fig.add_trace(go.Scatter(
             x=df["time"], y=df["bb_upper"],
@@ -63,7 +56,6 @@ def candlestick_chart(
             name="BB Lower", showlegend=False,
         ), row=1, col=1)
 
-    # ── SMA 20 / 50 ───────────────────────────────────────────────────────────
     if show_sma:
         for col_name, color, label in [
             ("sma20", COLORS["sma20"], "SMA20"),
@@ -75,7 +67,6 @@ def candlestick_chart(
                 name=label,
             ), row=1, col=1)
 
-    # ── Volume ────────────────────────────────────────────────────────────────
     bar_colors = np.where(
     df["close"] >= df["open"],
     "rgba(16,185,129,0.6)",
@@ -91,7 +82,6 @@ def candlestick_chart(
         name="Vol MA20", showlegend=False,
     ), row=2, col=1)
 
-    # ── RSI ───────────────────────────────────────────────────────────────────
     fig.add_trace(go.Scatter(
         x=df["time"], y=df["rsi"],
         line=dict(color=COLORS["rsi"], width=1.5),
@@ -104,7 +94,6 @@ def candlestick_chart(
     ]:
         fig.add_hline(y=lvl, line=dict(color=color, width=1, dash="dot"), row=3, col=1)
 
-    # ── Layout ────────────────────────────────────────────────────────────────
     fig.update_layout(**CHART_LAYOUT, height=520, xaxis_rangeslider_visible=False)
     fig.update_layout(legend=dict(orientation="h", y=1.02, x=0, bgcolor="rgba(0,0,0,0)"))
     fig.update_xaxes(**AXIS_STYLE)
@@ -112,7 +101,6 @@ def candlestick_chart(
     return fig
 
 
-# ─── GRAPHIQUE MACD ──────────────────────────────────────────────────────────
 def macd_chart(df: pd.DataFrame) -> go.Figure:
     hist_colors = [
         "rgba(16,185,129,0.7)" if v >= 0 else "rgba(239,68,68,0.7)"
@@ -135,7 +123,6 @@ def macd_chart(df: pd.DataFrame) -> go.Figure:
     return fig
 
 
-# ─── GRAPHIQUE VOLUME PAR SYMBOLE ────────────────────────────────────────────
 def volume_dist_chart(df_market: pd.DataFrame) -> go.Figure:
     top = df_market.nlargest(15, "volume_usdt")
     fig = go.Figure(go.Bar(
@@ -154,7 +141,6 @@ def volume_dist_chart(df_market: pd.DataFrame) -> go.Figure:
     return fig
 
 
-# ─── SCATTER : Volume vs Variation ───────────────────────────────────────────
 def scatter_chart(df_market: pd.DataFrame) -> go.Figure:
     fig = go.Figure(go.Scatter(
         x=df_market["volume_usdt"] / 1e6,
@@ -179,7 +165,6 @@ def scatter_chart(df_market: pd.DataFrame) -> go.Figure:
     return fig
 
 
-# ─── COMPARAISON MULTI-ACTIFS ─────────────────────────────────────────────────
 def comparison_chart(data: dict) -> go.Figure:
     """
     data = { "BTC": pd.Series(performance_normalisée), ... }
@@ -196,7 +181,6 @@ def comparison_chart(data: dict) -> go.Figure:
     return fig
 
 
-# ─── HEATMAP CORRÉLATION ─────────────────────────────────────────────────────
 def correlation_heatmap(corr_df: pd.DataFrame) -> go.Figure:
     fig = go.Figure(go.Heatmap(
         z=corr_df.values,
@@ -213,7 +197,6 @@ def correlation_heatmap(corr_df: pd.DataFrame) -> go.Figure:
     return fig
 
 
-# ─── ATR HISTORIQUE ──────────────────────────────────────────────────────────
 def atr_chart(df: pd.DataFrame) -> go.Figure:
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -227,7 +210,6 @@ def atr_chart(df: pd.DataFrame) -> go.Figure:
     return fig
 
 
-# ─── DISTRIBUTION DES RETOURS ─────────────────────────────────────────────────
 def returns_histogram(returns: pd.Series) -> go.Figure:
     fig = go.Figure(go.Histogram(
         x=returns,

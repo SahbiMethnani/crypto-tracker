@@ -1,14 +1,7 @@
-# ─── ui.py ───────────────────────────────────────────────────────────────────
-# Composants HTML/CSS réutilisables (cartes KPI, badges, lignes de classement)
-# Modifie ce fichier pour changer l'apparence des composants de l'interface
-# ─────────────────────────────────────────────────────────────────────────────
-
 import streamlit as st
 
 
-# ─── CSS GLOBAL ──────────────────────────────────────────────────────────────
 def inject_css() -> None:
-    """Injecte tout le CSS personnalisé de l'application."""
     st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -147,7 +140,6 @@ section[data-testid="stSidebar"] .block-container { padding: 1.5rem 1rem; }
 """, unsafe_allow_html=True)
 
 
-# ─── COMPOSANTS RÉUTILISABLES ─────────────────────────────────────────────────
 
 def section_header(label: str) -> None:
     st.markdown(
@@ -157,7 +149,6 @@ def section_header(label: str) -> None:
 
 
 def kpi_card(label: str, value: str, delta: str = "", delta_pos: bool = True) -> str:
-    """Retourne le HTML d'une carte KPI."""
     delta_class = "delta-pos" if delta_pos else "delta-neg"
     delta_html  = f'<div class="metric-delta {delta_class}">{delta}</div>' if delta else ""
     return f"""
@@ -169,7 +160,6 @@ def kpi_card(label: str, value: str, delta: str = "", delta_pos: bool = True) ->
 
 
 def signal_card(indicator: str, signal: str, description: str) -> None:
-    """Affiche une carte de signal technique."""
     pill_class = {"BUY": "signal-buy", "SELL": "signal-sell", "NEUTRAL": "signal-neutral"}[signal]
     st.markdown(f"""
     <div style="margin-bottom:1rem;padding:0.9rem;background:var(--bg-card);
@@ -183,7 +173,6 @@ def signal_card(indicator: str, signal: str, description: str) -> None:
 
 
 def stats_box(stats: dict) -> None:
-    """Affiche un tableau de statistiques clé/valeur."""
     rows_html = "".join(f"""
     <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)">
         <span style="font-size:0.72rem;color:var(--text-muted)">{k}</span>
@@ -196,7 +185,6 @@ def stats_box(stats: dict) -> None:
 
 
 def rank_row(rank: int, symbol: str, price: float, change_pct: float) -> None:
-    """Affiche une ligne dans le classement gainers/losers."""
     if change_pct >= 0:
         change_html = f'<span class="change-val delta-pos">▲ {change_pct:.2f}%</span>'
     else:
@@ -211,7 +199,6 @@ def rank_row(rank: int, symbol: str, price: float, change_pct: float) -> None:
 
 
 def top_bar(selected_pair: str, selected_tf: str) -> None:
-    """Affiche la barre de titre avec le badge LIVE."""
     st.markdown(f"""
     <div class="top-bar">
         <div>

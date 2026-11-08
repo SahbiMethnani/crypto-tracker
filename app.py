@@ -162,7 +162,6 @@ with tab2:
         section_header("VOLUME vs VARIATION 24H")
         st.plotly_chart(scatter_chart(df_market),     use_container_width=True, config={"displayModeBar": False})
 
-    # Tableau complet
     section_header("TOUTES LES PAIRES USDT")
     df_display = df_market.copy()
     df_display["change_pct"]  = df_display["change_pct"].apply(lambda x: f"{x:+.2f}%")
