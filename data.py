@@ -5,15 +5,29 @@ import streamlit as st
 from config import CACHE_TTL_MARKET, CACHE_TTL_OHLCV, IP_PROXY, PORT_PROXY
 
 
-
+"""
 @st.cache_resource
 def get_exchange():
     return ccxt.binance({
         "enableRateLimit": True,
         "timeout": 30000,
-       # "httpsProxy": f"http://{IP_PROXY}:{PORT_PROXY}",
+       #"httpsProxy": f"http://{IP_PROXY}:{PORT_PROXY}",
+    })
+"""
+@st.cache_resource
+def get_exchange():
+    exchange = ccxt.binance({
+        "enableRateLimit": True,
+        "timeout": 30000,
+        "httpProxy": None,
+        "httpsProxy": None,
+        "socksProxy": None,
     })
 
+    exchange.session.trust_env = False
+    exchange.proxies = {}
+
+    return exchange
 
 
 @st.cache_data(ttl=CACHE_TTL_MARKET)
