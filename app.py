@@ -102,9 +102,9 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 
 tab1, tab2, tab3 = st.tabs([
-    "  📈  Graphique & Technique  ",
-    "  🌐  Vue Marché  ",
-    "  🔬  Analyse Avancée  ",
+    "    Graphique & Technique  ",
+    "    Vue Marché  ",
+    "    Analyse Avancée  ",
 ])
 
 
