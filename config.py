@@ -62,3 +62,27 @@ CHART_LAYOUT_SIMPLE = dict(
     xaxis=AXIS_STYLE,
     yaxis=AXIS_STYLE,
 )
+
+import socket
+
+
+
+def get_local_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip_address = s.getsockname()[0]
+        s.close()
+        return ip_address
+    except socket.error as e:
+        print(f"Erreur lors de la récupération de l'adresse IP : {e}")
+        return None
+
+IP_PROXY=get_local_ip()  
+
+def get_available_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+     s.bind(("", 0))  
+     port_libre = s.getsockname()[1]
+     return port_libre
+PORT_PROXY=get_available_port()

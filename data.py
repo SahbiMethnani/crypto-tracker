@@ -2,22 +2,23 @@ import ccxt
 import pandas as pd
 import streamlit as st
 
-from config import CACHE_TTL_MARKET, CACHE_TTL_OHLCV
+from config import CACHE_TTL_MARKET, CACHE_TTL_OHLCV, IP_PROXY, PORT_PROXY
+
 
 
 @st.cache_resource
 def get_exchange():
-    """Retourne une instance Binance réutilisée (rate-limit activé)."""
-    return ccxt.binance({"enableRateLimit": True})
+    return ccxt.binance({
+        "enableRateLimit": True,
+        "timeout": 30000,
+       # "httpsProxy": f"http://{IP_PROXY}:{PORT_PROXY}",
+    })
+
 
 
 @st.cache_data(ttl=CACHE_TTL_MARKET)
 def fetch_market_overview(n: int = 50) -> pd.DataFrame:
-    """
-    Récupère les tickers des n premières paires USDT.
-    Retourne un DataFrame avec : symbol, pair, price, change_pct,
-    volume_usdt, high_24h, low_24h, bid, ask.
-    """
+    
     ex = get_exchange()
     markets = ex.load_markets()
     pairs = [s for s in markets if s.endswith("/USDT") and "/" in s][:n]
