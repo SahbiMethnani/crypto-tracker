@@ -5,7 +5,7 @@ Application web d’analyse et de visualisation des marchés de cryptomonnaies e
 
 ## Fonctionnalités
 
-* 📈 **Graphiques avancés**
+* **Graphiques avancés**
 
   * Chandeliers (Candlestick)
   * Bandes de Bollinger
@@ -63,8 +63,8 @@ ccxt refuse les requests prod
 
 le but maintenant d'avoir une solution de se cacher lors de l'interrogation de l'api 
 
-**En cours d'etude** : 
-une api local consome  ccxt  et notre application va consomer cette api (proxy caché)
-
+**solution impplementée** : 
+* au debut nous avons essayé une api local consome  ccxt  et notre application va consomer cette api (proxy caché)
+* utiliser ccxt avec une utilisation multiple de  source pas un seul source jusqu'a atteindre une source accepte notre inttrogation 
 
 
